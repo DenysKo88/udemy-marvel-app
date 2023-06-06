@@ -3,8 +3,9 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { useState } from "react";
-
+import { Helmet } from "react-helmet";
 import decoration from "../../resources/img/vision.png";
+import CharSearchForm from "../charSearchForm/CharSearchForm";
 
 const MainPage = () => {
     const [selectedChar, setSelectedChar] = useState(null);
@@ -14,16 +15,27 @@ const MainPage = () => {
     };
     return (
       <>
+        <Helmet>
+          <meta 
+            name="description" 
+            content="Marvel information portal" />
+          <title>Marvel information portal</title>
+        </Helmet>
         <ErrorBoundary>
-            <RandomChar />
+          <RandomChar />
         </ErrorBoundary>
         <div className="char__content">
+          <ErrorBoundary>
+            <CharList onCharSelected={onCharSelected} />
+          </ErrorBoundary>
+          <div>
             <ErrorBoundary>
-                <CharList onCharSelected={onCharSelected} />
+              <CharInfo charId={selectedChar} />
             </ErrorBoundary>
             <ErrorBoundary>
-                <CharInfo charId={selectedChar} />
+              <CharSearchForm />
             </ErrorBoundary>
+          </div>
         </div>
         <img className="bg-decoration" src={decoration} alt="vision" />
       </>
